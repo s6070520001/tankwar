@@ -18,7 +18,7 @@ public class GameClient extends JComponent {
     @Override
     protected void paintComponent(Graphics g) {
         //super.paintComponent(g);
-        g.drawImage(new ImageIcon("assets\\images\\itankD.png").getImage(),400,100,null);
+        g.drawImage(new ImageIcon("assets\\images\\itankD.png").getImage(),(1024-47)/2,(768-47)/2,null);
     }
 }
 
