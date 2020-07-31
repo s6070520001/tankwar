@@ -8,7 +8,7 @@ public class GameClient extends JComponent {
     private int width;
     private int height;
     private  boolean stop;
-    //玩家坦克
+    //???a?Z?J
     private Tank playTank;
 
     GameClient() {
@@ -42,12 +42,30 @@ public class GameClient extends JComponent {
     @Override
     protected void paintComponent(Graphics g) {
         //super.paintComponent(g);
-        g.drawImage(playTank.getImage(), playTank.getX(), playTank.getY(), null);
+        //g.drawImage(playTank.getImage(), playTank.getX(), playTank.getY(), null);
+        playTank.draw(g);
     }
 
 
-    //按鍵指令:讓坦克上下左右
+
     public void keyPressed(KeyEvent e) {
+        boolean[] dirs = playTank.getDirs();
+        switch (e.getKeyCode()){
+            case KeyEvent.VK_UP:
+                dirs[0]=true;
+                break;
+            case KeyEvent.VK_DOWN:
+                dirs[1]=true;
+                break;
+            case KeyEvent.VK_LEFT:
+                dirs[2]=true;
+                break;
+            case KeyEvent.VK_RIGHT:
+                dirs[3]=true;
+                break;
+        }
+
+
         switch (e.getKeyCode()) {
             case KeyEvent.VK_UP:
                 playTank.setDirection(Direction.UP);
@@ -74,5 +92,24 @@ public class GameClient extends JComponent {
 
         playTank.move();
 
+    }
+
+
+    public void keyReleased(KeyEvent e){
+        boolean[] dirs = playTank.getDirs();
+        switch (e.getKeyCode()) {
+            case KeyEvent.VK_UP:
+                dirs[0] = false;
+                break;
+            case KeyEvent.VK_DOWN:
+                dirs[1] = false;
+                break;
+            case KeyEvent.VK_LEFT:
+                dirs[2] = false;
+                break;
+            case KeyEvent.VK_RIGHT:
+                dirs[3] = false;
+                break;
+        }
     }
 }
