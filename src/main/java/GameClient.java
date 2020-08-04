@@ -25,10 +25,11 @@ public class GameClient extends JComponent {
                 enemyTanks.add(new Tank(200+j*80,500+80*i,Direction.UP,true));
             }
         }
+        Image image = Tools.getImage("brick.png");
         Wall[] walls={
-                new Wall(300,150,15,true),
-                new Wall(150,200,15,false),
-                new Wall(850,200,15,false)
+                new Wall(300,150,15,true,image),
+                new Wall(150,200,15,false,image),
+                new Wall(850,200,15,false,image)
         };
         this.walls.addAll(Arrays.asList(walls));
     }

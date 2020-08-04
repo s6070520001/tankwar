@@ -4,9 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
-public class Tank {
-    private int x;
-    private int y;
+public class Tank extends GameObject {
     private Direction direction;
     private int speed;
     private boolean[] dirs = new boolean[4];
@@ -34,13 +32,14 @@ public class Tank {
         else if (!dirs[0] && !dirs[1] && !dirs[2] && dirs[3])direction=Direction.RIGHT;
     }
 
-    public Tank(int x, int y, Direction direction) {
-      this(x,y,direction,false);
+    public Tank(int x, int y, Direction direction,Image image) {
+      this(x,y,direction,false,image);
     }
 
-    public Tank(int x, int y, Direction direction,boolean enemy) {
-        this.x = x;
-        this.y = y;
+    public Tank(int x, int y, Direction direction,boolean enemy,Image image) {
+        super(x,y,image);
+        this.x=x;
+        this.y=y;
         this.direction = direction;
         speed = 5;
         this.enemy=enemy;
