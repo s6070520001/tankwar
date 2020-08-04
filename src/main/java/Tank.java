@@ -119,20 +119,20 @@ public class Tank {
                 x -= speed;
                 break;
             case UP_LEFT:
-                x -= Math.pow(Math.pow(speed, 2), 0.5);
-                y -= Math.pow(Math.pow(speed, 2), 0.5);
+                x -= speed;
+                y -= speed;
                 break;
             case UP_RIGHT:
-                x += Math.pow(Math.pow(speed, 2), 0.5);
-                y -= Math.pow(Math.pow(speed, 2), 0.5);
+                x +=speed;
+                y -=speed;
                 break;
             case DOWN_LEFT:
-                x -= Math.pow(Math.pow(speed, 2), 0.5);
-                y += Math.pow(Math.pow(speed, 2), 0.5);
+                x -= speed;
+                y += speed;
                 break;
             case DOWN_RIGHT:
-                x += Math.pow(Math.pow(speed, 2), 0.5);
-                y += Math.pow(Math.pow(speed, 2), 0.5);
+                x += speed;
+                y += speed;
                 break;
         }
     }
