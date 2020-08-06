@@ -2,12 +2,15 @@ import javax.swing.*;
 import java.awt.*;
 
 public abstract class GameObject {
-    protected int x, y;
+    protected int x, y ,oldX,oldY;
     private int bricks;
-
     protected   int width;
     protected   int height;
     protected  Image[] image;
+
+    public Rectangle getRectangle(){
+        return new Rectangle(x,y,width,height);
+    }
 
     public GameObject(int x, int y, Image[] image) {
         this.x = x;

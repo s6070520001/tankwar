@@ -17,6 +17,9 @@ public class GameClient extends JComponent {
 
     private List<GameObject> objects = new ArrayList<>();
 
+    public List<GameObject> getObjects(){
+        return objects;
+    }
 
     Image[] brickImage = {Tools.getImage("brick.png")};
     Image[] iTankImage = new Image[8];
@@ -131,7 +134,7 @@ public class GameClient extends JComponent {
 
         }
 
-        playerTank.move();
+
 
     }
 
