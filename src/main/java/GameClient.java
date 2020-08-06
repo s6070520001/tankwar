@@ -81,9 +81,8 @@ public class GameClient extends JComponent {
 
     @Override
     protected void paintComponent(Graphics g) {
-        //super.paintComponent(g);
-        //g.drawImage(playTank.getImage(), playTank.getX(), playTank.getY(), null);
-
+        g.setColor(Color.BLACK);
+        g.fillRect(0,0,getWidth(),getHeight());
         for (GameObject object : objects) {
             object.draw(g);
         }
