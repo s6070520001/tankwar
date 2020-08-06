@@ -32,49 +32,47 @@ public class Tank extends GameObject {
         else if (!dirs[0] && !dirs[1] && !dirs[2] && dirs[3])direction=Direction.RIGHT;
     }
 
-    public Tank(int x, int y, Direction direction,Image image) {
+    public Tank(int x, int y, Direction direction,Image[] image) {
       this(x,y,direction,false,image);
     }
 
-    public Tank(int x, int y, Direction direction,boolean enemy,Image image) {
+    public Tank(int x, int y, Direction direction,boolean enemy,Image[] image) {
         super(x,y,image);
-        this.x=x;
-        this.y=y;
         this.direction = direction;
         speed = 5;
         this.enemy=enemy;
     }
 
-    public Image getImage() {
-
-        String name =enemy ? "etank":"itank";
-
-        if (direction == Direction.UP)
-            return new ImageIcon("assets\\images\\"+name+"U.png").getImage();
-        if (direction == Direction.DOWN)
-            return new ImageIcon("assets\\images\\"+name+"D.png").getImage();
-        if (direction == Direction.LEFT)
-            return new ImageIcon("assets\\images\\"+name+"L.png").getImage();
-        if (direction == Direction.RIGHT)
-            return new ImageIcon("assets\\images\\"+name+"R.png").getImage();
-        if (direction == Direction.UP_LEFT)
-            return new ImageIcon("assets\\images\\"+name+"LU.png").getImage();
-        if (direction == Direction.UP_RIGHT)
-            return new ImageIcon("assets\\images\\"+name+"RU.png").getImage();
-        if (direction == Direction.DOWN_LEFT)
-            return new ImageIcon("assets\\images\\"+name+"LD.png").getImage();
-        if (direction == Direction.DOWN_RIGHT)
-            return new ImageIcon("assets\\images\\"+name+"RD.png").getImage();
-
-        return null;
-    }
+//    public Image getImage() {
+//
+//        String name =enemy ? "etank":"itank";
+//
+//        if (direction == Direction.UP)
+//            return new ImageIcon("assets\\images\\"+name+"U.png").getImage();
+//        if (direction == Direction.DOWN)
+//            return new ImageIcon("assets\\images\\"+name+"D.png").getImage();
+//        if (direction == Direction.LEFT)
+//            return new ImageIcon("assets\\images\\"+name+"L.png").getImage();
+//        if (direction == Direction.RIGHT)
+//            return new ImageIcon("assets\\images\\"+name+"R.png").getImage();
+//        if (direction == Direction.UP_LEFT)
+//            return new ImageIcon("assets\\images\\"+name+"LU.png").getImage();
+//        if (direction == Direction.UP_RIGHT)
+//            return new ImageIcon("assets\\images\\"+name+"RU.png").getImage();
+//        if (direction == Direction.DOWN_LEFT)
+//            return new ImageIcon("assets\\images\\"+name+"LD.png").getImage();
+//        if (direction == Direction.DOWN_RIGHT)
+//            return new ImageIcon("assets\\images\\"+name+"RD.png").getImage();
+//
+//        return null;
+//    }
 
     public void draw(Graphics g){
         if (!isStop()) {
             determineDirection();
             move();
         }
-        g.drawImage(getImage(),x,y,null);
+        g.drawImage(image[direction.ordinal()],x,y,null);
     }
 
     public boolean isStop(){

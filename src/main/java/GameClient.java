@@ -5,34 +5,47 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 public class GameClient extends JComponent {
     private int width;
     private int height;
-    private  boolean stop;
+    private boolean stop;
     //???a?Z?J
     private Tank playerTank;
 
-    private List<Tank> enemyTanks = new ArrayList<>();
+    private List<GameObject> objects = new ArrayList<>();
 
-    private  List<Wall>walls =new ArrayList<>();
 
-    public void init(){
-        playerTank = new Tank(500 ,100,Direction.DOWN);
-        for (int i = 0; i<3; i++){
-            for(int j=0 ;j<8;j++){
-                enemyTanks.add(new Tank(200+j*80,500+80*i,Direction.UP,true));
+    Image[] brickImage = {Tools.getImage("brick.png")};
+    Image[] iTankImage = new Image[8];
+    Image[] eTankImage = new Image[8];
+
+    String[] sub = {"U.png", "D.png", "L.png", "R.png", "LU.png", "RU.png", "LD.png", "RD.png"};
+
+
+    public void init() {
+
+
+        for (int i = 0; i < iTankImage.length; i++) {
+            iTankImage[i] = Tools.getImage("itank" + sub[i]);
+            eTankImage[i] = Tools.getImage("etank" + sub[i]);
+        }
+        playerTank = new Tank(500, 100, Direction.DOWN, iTankImage);
+        objects.add(playerTank);
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 8; j++) {
+                objects.add(new Tank(200 + j * 80, 500 + 80 * i, Direction.UP, true, eTankImage));
             }
         }
-        Image image = Tools.getImage("brick.png");
-        Wall[] walls={
-                new Wall(300,150,15,true,image),
-                new Wall(150,200,15,false,image),
-                new Wall(850,200,15,false,image)
-        };
-        this.walls.addAll(Arrays.asList(walls));
+
+
+        objects.add(new Wall(300, 150, 15, true, brickImage));
+        objects.add(new Wall(150, 200, 15, false, brickImage));
+        objects.add(new Wall(850, 200, 15, false, brickImage));
     }
+
 
 
 
@@ -45,8 +58,8 @@ public class GameClient extends JComponent {
         this.height = height;
         this.setPreferredSize(new Dimension(width, height));
         init();
-        new  Thread(()->{
-            while(!stop){
+        new Thread(() -> {
+            while (!stop) {
                 repaint();
                 try {
                     Thread.sleep(50);
@@ -58,7 +71,6 @@ public class GameClient extends JComponent {
     }
 
 
-
 //    public void init() {
 //        playerTank = new Tank(400, 100, Direction.DOWN);
 //    }
@@ -68,34 +80,29 @@ public class GameClient extends JComponent {
     protected void paintComponent(Graphics g) {
         //super.paintComponent(g);
         //g.drawImage(playTank.getImage(), playTank.getX(), playTank.getY(), null);
-        playerTank.draw(g);
-        for (Tank tank:enemyTanks){
-            tank.draw(g);
-        }
-        for (Wall wall:walls){
-            wall.draw(g);
+
+        for (GameObject object : objects) {
+            object.draw(g);
         }
 
 
     }
 
 
-
-
     public void keyPressed(KeyEvent e) {
         boolean[] dirs = playerTank.getDirs();
-        switch (e.getKeyCode()){
+        switch (e.getKeyCode()) {
             case KeyEvent.VK_UP:
-                dirs[0]=true;
+                dirs[0] = true;
                 break;
             case KeyEvent.VK_DOWN:
-                dirs[1]=true;
+                dirs[1] = true;
                 break;
             case KeyEvent.VK_LEFT:
-                dirs[2]=true;
+                dirs[2] = true;
                 break;
             case KeyEvent.VK_RIGHT:
-                dirs[3]=true;
+                dirs[3] = true;
                 break;
         }
 
@@ -129,7 +136,7 @@ public class GameClient extends JComponent {
     }
 
 
-    public void keyReleased(KeyEvent e){
+    public void keyReleased(KeyEvent e) {
         boolean[] dirs = playerTank.getDirs();
         switch (e.getKeyCode()) {
             case KeyEvent.VK_UP:
