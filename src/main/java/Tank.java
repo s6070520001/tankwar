@@ -4,20 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
-public class Tank extends GameObject {
-    protected Direction direction;
-    protected int speed;
+public class Tank extends MoveObject {
     protected boolean[] dirs = new boolean[4];
-    protected boolean enemy;
-
-
-    public int getSpeed() {
-        return speed;
-    }
-
-    public void setSpeed(int speed) {
-        this.speed = speed;
-    }
 
     private void determineDirection() {
         if (dirs[0] && dirs[2] && !dirs[1] && !dirs[3]) direction = Direction.UP_LEFT;
@@ -35,7 +23,7 @@ public class Tank extends GameObject {
     }
 
     public Tank(int x, int y, Direction direction, boolean enemy, Image[] image) {
-        super(x, y, image);
+        super(x, y, direction,enemy,image);
         this.direction = direction;
         speed = 10;
         this.enemy = enemy;
@@ -64,84 +52,7 @@ public class Tank extends GameObject {
         return true;
     }
 
-    public int getX() {
-        return x;
-    }
 
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
-    }
-
-    public Direction getDirection() {
-        return direction;
-    }
-
-    public void setDirection(Direction direction) {
-        this.direction = direction;
-    }
-
-    public void move() {
-        oldX = x;
-        oldY = y;
-        switch (direction) {
-            case UP:
-                y -= speed;
-                break;
-            case DOWN:
-                y += speed;
-                break;
-            case RIGHT:
-                x += speed;
-                break;
-            case LEFT:
-                x -= speed;
-                break;
-            case UP_LEFT:
-                x -= speed;
-                y -= speed;
-                break;
-            case UP_RIGHT:
-                x += speed;
-                y -= speed;
-                break;
-            case DOWN_LEFT:
-                x -= speed;
-                y += speed;
-                break;
-            case DOWN_RIGHT:
-                x += speed;
-                y += speed;
-                break;
-        }
-
-
-    }
-    public boolean  collisionBound(){
-        if (x < 0) {
-            x = 0;
-            return true;
-        } else if (x > TankWar.gameClient.getWidth() - width) {
-            x = TankWar.gameClient.getWidth() - width;
-            return true;
-        }
-
-        if (y < 0) {
-            y = 0;
-            return true;
-        } else if (y > TankWar.gameClient.getHeight() - height) {
-            y = TankWar.gameClient.getHeight() - height;
-            return true;
-        }
-        return false;
-    }
     //bound
     public void collision(){
         collisionBound();
