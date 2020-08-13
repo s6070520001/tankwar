@@ -8,7 +8,7 @@ public abstract class GameObject {
     protected   int height;
     protected  Image[] image;
     protected  boolean alive;
-
+    protected int frame;
     public Rectangle getRectangle(){
         return new Rectangle(x,y,width,height);
     }

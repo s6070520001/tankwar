@@ -8,7 +8,7 @@ public class Bullet extends MoveObject {
 
     @Override
     public void draw(Graphics g) {
-        if(!alive){
+        if (!alive) {
             return;
         }
         move();
@@ -18,30 +18,38 @@ public class Bullet extends MoveObject {
 
     @Override
 
-    public void collision() {
-        if (collisionBound()){
+    public boolean collision() {
+        if (collisionBound()) {
             alive = false;
-            return;
+            TankWar.gameClient.addGameObject(new Explosion(x + (GameClient.explosionImage[0].getWidth(null) - width) / 2,
+                    y + (GameClient.explosionImage[0].getHeight(null) - height) / 2, GameClient.explosionImage));
+            return true;
         }
-        //wall bound
+        //bullet does not collision
         for (GameObject object : TankWar.gameClient.getObjects()) {
-            if (object == this) {
+            if (object instanceof Bullet || object instanceof Explosion) {
                 continue;
             }
+            //Tank collision
             if (object instanceof Tank) {
                 if (((Tank) object).enemy == enemy) {
                     continue;
                 }
 
             }
+            //collision and disappear
             if (object.getRectangle().intersects(this.getRectangle())) {
                 alive = false;
-                if(object instanceof Tank){
-                    object.alive=false;
+                if (object instanceof Tank) {
+                    object.alive = false;
                 }
-                return;
+                //create explosion
+                TankWar.gameClient.addGameObject(new Explosion(x + (GameClient.explosionImage[0].getWidth(null) - width) / 2,
+                        y + (GameClient.explosionImage[0].getHeight(null) - height) / 2, GameClient.explosionImage));
+                return true;
             }
         }
+        return false;
     }
 
 }

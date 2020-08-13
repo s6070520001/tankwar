@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class GameClient extends JComponent {
     private int width;
@@ -14,12 +15,13 @@ public class GameClient extends JComponent {
     //bullet image
     public static Image[] bulletImage = new Image[8];
 
+    public static Image[] explosionImage = new Image[11];
     //???a?Z?J
     private Tank playerTank;
 
-    private List<GameObject> objects = new ArrayList<>();
+    private CopyOnWriteArrayList<GameObject> objects = new CopyOnWriteArrayList<>();
 
-    public List<GameObject> getObjects(){
+    public List<GameObject> getObjects() {
         return objects;
     }
 
@@ -36,13 +38,16 @@ public class GameClient extends JComponent {
         for (int i = 0; i < iTankImage.length; i++) {
             iTankImage[i] = Tools.getImage("itank" + sub[i]);
             eTankImage[i] = Tools.getImage("etank" + sub[i]);
-            bulletImage[i]= Tools.getImage("missile" + sub[i]);
+            bulletImage[i] = Tools.getImage("missile" + sub[i]);
+        }
+        for (int i = 0; i < explosionImage.length; i++) {
+            explosionImage[i] = Tools.getImage(i + ".png");
         }
         playerTank = new Tank(500, 100, Direction.DOWN, iTankImage);
         objects.add(playerTank);
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 8; j++) {
-                objects.add(new Tank(200 + j * 80, 500 + 80 * i, Direction.UP, true, eTankImage));
+                objects.add(new EnemyTank(200 + j * 80, 500 + 80 * i, Direction.UP, true, eTankImage));
             }
         }
 
@@ -51,8 +56,6 @@ public class GameClient extends JComponent {
         objects.add(new Wall(150, 200, 15, false, brickImage));
         objects.add(new Wall(850, 200, 15, false, brickImage));
     }
-
-
 
 
     GameClient() {
@@ -81,28 +84,53 @@ public class GameClient extends JComponent {
 //        playerTank = new Tank(400, 100, Direction.DOWN);
 //    }
 
-    public void addGameObject(GameObject object){
+    public void addGameObject(GameObject object) {
         objects.add(object);
     }
+
     @Override
     protected void paintComponent(Graphics g) {
         g.setColor(Color.BLACK);
-        g.fillRect(0,0,getWidth(),getHeight());
+        g.fillRect(0, 0, getWidth(), getHeight());
         for (GameObject object : objects) {
             object.draw(g);
         }
 
         //use Iterator safely move out
-        Iterator<GameObject> iterator = objects.iterator();
-
-        while(iterator.hasNext()){
-            if(!(iterator.next()).alive){
-                iterator.remove();
-
+        for (GameObject object : objects) {
+            if (!object.alive) {
+                objects.remove(object);
             }
         }
+//        Iterator<GameObject> iterator = objects.iterator();
+//
+//        while(iterator.hasNext()){
+//            if(!(iterator.next()).alive){
+//                iterator.remove();
+//
+//            }
+//        }
         System.out.println(objects.size());
 
+    }
+
+    //Game over
+    public void checkGameStatus() {
+        boolean gameWin = true;
+
+        for (GameObject object : objects) {
+            if (object instanceof EnemyTank) {
+                gameWin = false;
+            }
+        }
+
+        if (gameWin) {
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 4; j++) {
+                    addGameObject(new EnemyTank(320 + j * 100, 450 + 100 * i, Direction.UP, true, eTankImage));
+                }
+            }
+        }
     }
 
 
@@ -123,6 +151,16 @@ public class GameClient extends JComponent {
                 break;
             case KeyEvent.VK_CONTROL:
                 playerTank.fire();
+                break;
+            case KeyEvent.VK_A:
+                playerTank.superFire();
+                break;
+            case KeyEvent.VK_F2:
+                for(GameObject object:objects){
+                    if(object instanceof EnemyTank){
+                        objects.remove(object);
+                    }
+                }
                 break;
         }
 
@@ -150,7 +188,6 @@ public class GameClient extends JComponent {
             default:
 
         }
-
 
 
     }

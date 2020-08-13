@@ -23,15 +23,24 @@ public class Tank extends MoveObject {
     }
 
     public Tank(int x, int y, Direction direction, boolean enemy, Image[] image) {
-        super(x, y, direction,enemy,image);
+        super(x, y, direction, enemy, image);
         this.direction = direction;
         speed = 10;
         this.enemy = enemy;
     }
 
-    public void fire(){
-        TankWar.gameClient.addGameObject(new Bullet(x+width/2-GameClient.bulletImage[0].getWidth(null)/2,
-                y+height/2-GameClient.bulletImage[0].getHeight(null)/2,direction,enemy,GameClient.bulletImage));
+    public void fire() {
+        TankWar.gameClient.addGameObject(new Bullet(x + width / 2 - GameClient.bulletImage[0].getWidth(null) / 2,
+                y + height / 2 - GameClient.bulletImage[0].getHeight(null) / 2, direction, enemy, GameClient.bulletImage));
+    }
+
+    public void superFire() {
+        for (Direction direction : Direction.values()) {
+            Bullet bullet = new Bullet(x + width / 2 - GameClient.bulletImage[0].getWidth(null) / 2,
+                    y + height / 2 - GameClient.bulletImage[0].getHeight(null) / 2, direction, enemy, GameClient.bulletImage);
+            bullet.setSpeed(15);
+            TankWar.gameClient.addGameObject(bullet);
+        }
     }
 
     public void draw(Graphics g) {
@@ -54,19 +63,23 @@ public class Tank extends MoveObject {
 
 
     //bound
-    public void collision(){
-        collisionBound();
+    public boolean collision() {
+        if(collisionBound()){
+            return true;
+        }
+
         //wall bound
-        for (GameObject object:TankWar.gameClient.getObjects()){
-            if(object!=this){
-                if(object.getRectangle().intersects(this.getRectangle())){
-                    x=oldX;
-                    y=oldY;
+        for (GameObject object : TankWar.gameClient.getObjects()) {
+            if (object != this) {
+                if (object.getRectangle().intersects(this.getRectangle())) {
+                    x = oldX;
+                    y = oldY;
+                    return true;
 
                 }
             }
         }
-
+        return false;
     }
 
     public boolean[] getDirs() {
